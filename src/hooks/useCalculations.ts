@@ -1,34 +1,31 @@
 
 import { useMemo } from 'react';
 import type { FIRECalculation } from '../types';
-import { calculateFIRENumber, calculateYearsToFI, calculateProjection, calculateWithLifeEvents } from '../utils/calculations';
+import { calculateFIRENumber, calculateYearsToFI, calculateProjection } from '../utils/calculations';
 import { analyzeFIREPlan } from '../utils/analysis';
-import type { LifeEvent } from '../types/lifeEvents';
+import { calculateWithLifeEvents } from '../utils/calculations';
 
-export function useCalculations(
-  inputs: FIRECalculation,
-  lifeEvents: { events: LifeEvent[]; enabled: boolean }
-) {
-  return useMemo(() => {
-    const fireNumber = calculateFIRENumber(
-      inputs.annualExpenses,
-      inputs.withdrawalRate,
-      inputs.currentAge,
-      inputs.retirementAge,
-      inputs.inflationRate,
-      inputs.expenseGrowthRate
-    );
+export const useCalculations = (inputs: FIRECalculation, lifeEvents: { events: any[], enabled: boolean }) => {
+  const fireNumber = useMemo(() => calculateFIRENumber(
+    inputs.annualExpenses,
+    inputs.withdrawalRate,
+    inputs.currentAge,
+    inputs.retirementAge,
+    inputs.inflationRate,
+    inputs.expenseGrowthRate
+  ), [inputs.annualExpenses, inputs.withdrawalRate, inputs.currentAge, inputs.retirementAge, inputs.inflationRate, inputs.expenseGrowthRate]);
 
-    const yearsToFI = calculateYearsToFI(
-      inputs.currentSavings,
-      inputs.monthlyContribution,
-      inputs.expectedReturn,
-      fireNumber,
-      inputs.inflationRate,
-      inputs.salaryGrowthRate
-    );
+  const yearsToFI = useMemo(() => calculateYearsToFI(
+    inputs.currentSavings,
+    inputs.monthlyContribution,
+    inputs.expectedReturn,
+    fireNumber,
+    inputs.inflationRate,
+    inputs.salaryGrowthRate
+  ), [inputs.currentSavings, inputs.monthlyContribution, inputs.expectedReturn, fireNumber, inputs.inflationRate, inputs.salaryGrowthRate]);
 
-    let projectionData = calculateProjection(
+  const projectionData = useMemo(() => {
+    let data = calculateProjection(
       inputs.currentSavings,
       inputs.monthlyContribution,
       inputs.expectedReturn,
@@ -42,28 +39,30 @@ export function useCalculations(
     );
 
     if (lifeEvents.enabled) {
-      projectionData = calculateWithLifeEvents(
-        projectionData,
+      data = calculateWithLifeEvents(
+        data,
         lifeEvents.events,
         inputs.currentAge
       );
     }
 
-    const analysis = analyzeFIREPlan(
-      inputs.currentAge,
-      inputs.retirementAge,
-      inputs.currentSavings,
-      inputs.monthlyContribution,
-      Object.values(inputs.incomeDetails ?? {}).reduce((a, b) => a + b, 0) * 12,
-      yearsToFI,
-      fireNumber
-    );
+    return data;
+  }, [inputs, lifeEvents, fireNumber]);
 
-    return {
-      fireNumber,
-      yearsToFI,
-      projectionData,
-      analysis
-    };
-  }, [inputs, lifeEvents]);
-}
+  const analysis = useMemo(() => analyzeFIREPlan(
+    inputs.currentAge,
+    inputs.retirementAge,
+    inputs.currentSavings,
+    inputs.monthlyContribution,
+    Object.values(inputs.incomeDetails!).reduce((a, b) => a + b, 0) * 12,
+    yearsToFI,
+    fireNumber
+  ), [inputs, yearsToFI, fireNumber]);
+
+  return {
+    fireNumber,
+    yearsToFI,
+    projectionData,
+    analysis
+  };
+};
