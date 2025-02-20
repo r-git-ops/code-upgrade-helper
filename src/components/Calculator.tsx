@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Calculator as CalculatorIcon } from 'lucide-react';
-import { useCalculator } from '../hooks/useCalculator';
+import useCalculator from '../hooks/useCalculator';
 import InputField from './Calculator/InputField';
 import ResultsCard from './Calculator/ResultsCard';
 import ProjectionChart from './Calculator/ProjectionChart';

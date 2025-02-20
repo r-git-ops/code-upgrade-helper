@@ -1,53 +1,54 @@
+
 import { useState } from 'react';
 import { defaultLifeEvents } from '../data/defaultLifeEvents';
 import { defaultCategoryInflationRates } from '../utils/inflationRates';
 import { calculateFIRENumber, calculateYearsToFI, calculateProjection, calculateWithLifeEvents } from '../utils/calculations';
 import { analyzeFIREPlan } from '../utils/analysis';
 import type { FIRECalculation } from '../types';
-
-const initialState: FIRECalculation = {
-  currentAge: 30,
-  retirementAge: 45,
-  currentSavings: 2500000,
-  monthlyContribution: 50000,
-  expectedReturn: 12,
-  annualExpenses: 1000000,
-  withdrawalRate: 4,
-  inflationRate: 6,
-  salaryGrowthRate: 5,
-  expenseGrowthRate: 2,
-  monthlyExpenses: {
-    housing: 25000,
-    utilities: 5000,
-    groceries: 15000,
-    transportation: 8000,
-    healthcare: 5000,
-    insurance: 3000,
-    entertainment: 10000,
-    shopping: 10000,
-    miscellaneous: 5000
-  },
-  incomeDetails: {
-    primarySalary: 150000,
-    bonuses: 25000,
-    rentalIncome: 0,
-    otherIncome: 0
-  },
-  investmentAllocation: {
-    equityMutualFunds: 40,
-    stocks: 20,
-    ppf: 10,
-    epf: 10,
-    nps: 5,
-    fixedDeposits: 5,
-    gold: 5,
-    realEstate: 0,
-    cash: 5
-  }
-};
+import type { LifeEvent } from '../types/lifeEvents';
 
 export default function useCalculator() {
-  const [inputs, setInputs] = useState<FIRECalculation>(initialState);
+  const [inputs, setInputs] = useState<FIRECalculation>({
+    currentAge: 30,
+    retirementAge: 45,
+    currentSavings: 2500000,
+    monthlyContribution: 50000,
+    expectedReturn: 12,
+    annualExpenses: 1000000,
+    withdrawalRate: 4,
+    inflationRate: 6,
+    salaryGrowthRate: 5,
+    expenseGrowthRate: 2,
+    monthlyExpenses: {
+      housing: 25000,
+      utilities: 5000,
+      groceries: 15000,
+      transportation: 8000,
+      healthcare: 5000,
+      insurance: 3000,
+      entertainment: 10000,
+      shopping: 10000,
+      miscellaneous: 5000
+    },
+    incomeDetails: {
+      primarySalary: 150000,
+      bonuses: 25000,
+      rentalIncome: 0,
+      otherIncome: 0
+    },
+    investmentAllocation: {
+      equityMutualFunds: 40,
+      stocks: 20,
+      ppf: 10,
+      epf: 10,
+      nps: 5,
+      fixedDeposits: 5,
+      gold: 5,
+      realEstate: 0,
+      cash: 5
+    }
+  });
+
   const [lifeEvents, setLifeEvents] = useState({
     events: defaultLifeEvents,
     enabled: true,
@@ -69,7 +70,7 @@ export default function useCalculator() {
 
     handleExpenseChange: (name: keyof NonNullable<typeof inputs.monthlyExpenses>, value: number) => {
       setInputs(prev => {
-        const updatedExpenses = { ...(prev.monthlyExpenses ?? {}), [name]: value };
+        const updatedExpenses = { ...prev.monthlyExpenses!, [name]: value };
         return {
           ...prev,
           monthlyExpenses: updatedExpenses,
@@ -82,7 +83,7 @@ export default function useCalculator() {
       setInputs(prev => ({
         ...prev,
         incomeDetails: {
-          ...(prev.incomeDetails ?? {}),
+          ...prev.incomeDetails!,
           [name]: value
         }
       }));
@@ -92,7 +93,7 @@ export default function useCalculator() {
       setInputs(prev => ({
         ...prev,
         investmentAllocation: {
-          ...(prev.investmentAllocation ?? {}),
+          ...prev.investmentAllocation!,
           [name]: value
         }
       }));
@@ -100,7 +101,7 @@ export default function useCalculator() {
 
     handleLifeEvents: {
       onToggle: (enabled: boolean) => setLifeEvents(prev => ({ ...prev, enabled })),
-      onAdd: (event: any) => setLifeEvents(prev => ({
+      onAdd: (event: LifeEvent) => setLifeEvents(prev => ({
         ...prev,
         events: [...prev.events, event]
       })),
@@ -108,13 +109,9 @@ export default function useCalculator() {
         ...prev,
         events: prev.events.filter((_, i) => i !== index)
       })),
-      onEdit: (index: number, event: any) => setLifeEvents(prev => ({
+      onEdit: (index: number, event: LifeEvent) => setLifeEvents(prev => ({
         ...prev,
         events: prev.events.map((e, i) => i === index ? event : e)
-      })),
-      onUpdateDefaultRates: (rates: any) => setLifeEvents(prev => ({
-        ...prev,
-        defaultInflationRates: rates
       }))
     }
   };
