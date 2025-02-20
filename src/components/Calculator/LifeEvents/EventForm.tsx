@@ -33,8 +33,7 @@ export default function EventForm({ onSubmit, onCancel, initialValues }: EventFo
           label="Age"
           name="age"
           value={formData.age}
-          onChange={(e) => setFormData(prev => ({ ...prev, age: parseInt(e.target.value) }))}
-          type="number"
+          onChange={(e) => setFormData(prev => ({ ...prev, age: parseInt(e.target.value) || 0 }))}
           min={0}
         />
         <InputField
@@ -42,12 +41,13 @@ export default function EventForm({ onSubmit, onCancel, initialValues }: EventFo
           name="name"
           value={formData.name}
           onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+          type="text"
         />
         <InputField
           label="Cost"
           name="cost"
           value={formData.cost}
-          onChange={(e) => setFormData(prev => ({ ...prev, cost: parseFloat(e.target.value) }))}
+          onChange={(e) => setFormData(prev => ({ ...prev, cost: parseFloat(e.target.value) || 0 }))}
           prefix="₹"
         />
         <div>

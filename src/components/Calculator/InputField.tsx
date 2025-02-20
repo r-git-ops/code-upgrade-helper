@@ -4,13 +4,14 @@ import React from 'react';
 interface InputFieldProps {
   label: string;
   name: string;
-  value: number;
+  value: number | string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   min?: number;
   max?: number;
   step?: string;
   prefix?: string;
   suffix?: string;
+  type?: string;
 }
 
 export default function InputField({
@@ -22,7 +23,8 @@ export default function InputField({
   max,
   step = "1",
   prefix,
-  suffix
+  suffix,
+  type = "number"
 }: InputFieldProps) {
   return (
     <div className="space-y-1">
@@ -34,9 +36,9 @@ export default function InputField({
           </div>
         )}
         <input
-          type="number"
+          type={type}
           name={name}
-          value={value || ''}
+          value={value}
           onChange={onChange}
           min={min}
           max={max}
