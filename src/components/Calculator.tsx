@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { PieChart, Target, CheckSquare } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -81,32 +80,32 @@ export default function Calculator() {
     }
   };
 
-  const handleExpenseChange = (name: keyof typeof inputs.monthlyExpenses!, value: number) => {
+  const handleExpenseChange = (name: keyof MonthlyExpenses, value: number) => {
     setInputs(prev => ({
       ...prev,
       monthlyExpenses: {
-        ...prev.monthlyExpenses!,
+        ...prev.monthlyExpenses,
         [name]: value
       },
-      annualExpenses: Object.values({ ...prev.monthlyExpenses!, [name]: value }).reduce((a, b) => a + b, 0) * 12
+      annualExpenses: Object.values({ ...prev.monthlyExpenses, [name]: value }).reduce((a, b) => a + b, 0) * 12
     }));
   };
 
-  const handleIncomeChange = (name: keyof typeof inputs.incomeDetails!, value: number) => {
+  const handleIncomeChange = (name: keyof IncomeDetails, value: number) => {
     setInputs(prev => ({
       ...prev,
       incomeDetails: {
-        ...prev.incomeDetails!,
+        ...prev.incomeDetails,
         [name]: value
       }
     }));
   };
 
-  const handleAllocationChange = (name: keyof typeof inputs.investmentAllocation!, value: number) => {
+  const handleAllocationChange = (name: keyof InvestmentAllocation, value: number) => {
     setInputs(prev => ({
       ...prev,
       investmentAllocation: {
-        ...prev.investmentAllocation!,
+        ...prev.investmentAllocation,
         [name]: value
       }
     }));
@@ -309,7 +308,7 @@ export default function Calculator() {
               </div>
 
               <InvestmentAllocation
-                allocation={inputs.investmentAllocation || {}}
+                allocation={inputs.investmentAllocation}
                 onChange={handleAllocationChange}
               />
 
@@ -330,12 +329,12 @@ export default function Calculator() {
             </CardHeader>
             <CardContent className="space-y-6">
               <ExpenseBreakdown
-                expenses={inputs.monthlyExpenses || {}}
+                expenses={inputs.monthlyExpenses}
                 onChange={handleExpenseChange}
               />
 
               <IncomeDetails
-                income={inputs.incomeDetails || {}}
+                income={inputs.incomeDetails}
                 onChange={handleIncomeChange}
               />
 
