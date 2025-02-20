@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { PieChart, Target, CheckSquare } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -6,7 +7,13 @@ import { calculateFIRENumber, calculateYearsToFI, calculateProjection, calculate
 import { analyzeFIREPlan } from '../utils/analysis';
 import { defaultLifeEvents } from '../data/defaultLifeEvents';
 import { defaultCategoryInflationRates } from '../utils/inflationRates';
-import type { FIRECalculation, LifeEvent } from '../types';
+import type { 
+  FIRECalculation, 
+  LifeEvent, 
+  MonthlyExpenses, 
+  IncomeDetails, 
+  InvestmentAllocation 
+} from '../types';
 import InputField from './Calculator/InputField';
 import ResultsCard from './Calculator/ResultsCard';
 import ProjectionChart from './Calculator/ProjectionChart';
