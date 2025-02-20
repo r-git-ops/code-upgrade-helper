@@ -1,10 +1,9 @@
-
 import { useState } from 'react';
-import { defaultLifeEvents } from '../../data/defaultLifeEvents';
-import { defaultCategoryInflationRates } from '../../utils/inflationRates';
-import { calculateFIRENumber, calculateYearsToFI, calculateProjection, calculateWithLifeEvents } from '../../utils/calculations';
-import { analyzeFIREPlan } from '../../utils/analysis';
-import type { FIRECalculation } from '../../types';
+import { defaultLifeEvents } from '../data/defaultLifeEvents';
+import { defaultCategoryInflationRates } from '../utils/inflationRates';
+import { calculateFIRENumber, calculateYearsToFI, calculateProjection, calculateWithLifeEvents } from '../utils/calculations';
+import { analyzeFIREPlan } from '../utils/analysis';
+import type { FIRECalculation } from '../types';
 
 const initialState: FIRECalculation = {
   currentAge: 30,
@@ -68,32 +67,32 @@ export default function useCalculator() {
       }
     },
 
-    handleExpenseChange: (name: keyof typeof inputs.monthlyExpenses!, value: number) => {
-      setInputs(prev => ({
-        ...prev,
-        monthlyExpenses: {
-          ...prev.monthlyExpenses!,
-          [name]: value
-        },
-        annualExpenses: Object.values({ ...prev.monthlyExpenses!, [name]: value }).reduce((a, b) => a + b, 0) * 12
-      }));
+    handleExpenseChange: (name: keyof NonNullable<typeof inputs.monthlyExpenses>, value: number) => {
+      setInputs(prev => {
+        const updatedExpenses = { ...(prev.monthlyExpenses ?? {}), [name]: value };
+        return {
+          ...prev,
+          monthlyExpenses: updatedExpenses,
+          annualExpenses: Object.values(updatedExpenses).reduce((a, b) => a + b, 0) * 12
+        };
+      });
     },
 
-    handleIncomeChange: (name: keyof typeof inputs.incomeDetails!, value: number) => {
+    handleIncomeChange: (name: keyof NonNullable<typeof inputs.incomeDetails>, value: number) => {
       setInputs(prev => ({
         ...prev,
         incomeDetails: {
-          ...prev.incomeDetails!,
+          ...(prev.incomeDetails ?? {}),
           [name]: value
         }
       }));
     },
 
-    handleAllocationChange: (name: keyof typeof inputs.investmentAllocation!, value: number) => {
+    handleAllocationChange: (name: keyof NonNullable<typeof inputs.investmentAllocation>, value: number) => {
       setInputs(prev => ({
         ...prev,
         investmentAllocation: {
-          ...prev.investmentAllocation!,
+          ...(prev.investmentAllocation ?? {}),
           [name]: value
         }
       }));
