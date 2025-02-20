@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { Target, ChartPie, CheckSquare } from 'lucide-react';
+import { PieChart, Target, CheckSquare } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { calculateFIRENumber, calculateYearsToFI, calculateProjection, calculateWithLifeEvents } from '../utils/calculations';
@@ -12,10 +13,10 @@ import ResultsCard from './Calculator/ResultsCard';
 import ProjectionChart from './Calculator/ProjectionChart';
 import InsightsCard from './Calculator/InsightsCard';
 import ExpenseBreakdown from './Calculator/ExpenseBreakdown';
-import IncomeDetails from './IncomeDetails';
-import InvestmentAllocation from './InvestmentAllocation';
-import EventForm from './LifeEvents/EventForm';
-import EventList from './LifeEvents/EventList';
+import IncomeDetails from './Calculator/IncomeDetails';
+import InvestmentAllocation from './Calculator/InvestmentAllocation';
+import EventForm from './Calculator/LifeEvents/EventForm';
+import EventList from './Calculator/LifeEvents/EventList';
 
 export default function Calculator() {
   const [inputs, setInputs] = useState<FIRECalculation>({
@@ -191,7 +192,7 @@ export default function Calculator() {
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
       <div className="flex items-center gap-2 mb-6">
-        <ChartPie className="w-6 h-6 text-blue-600" />
+        <PieChart className="w-6 h-6 text-blue-600" />
         <h2 className="text-2xl font-bold text-gray-800">Investment Planner</h2>
       </div>
 
@@ -202,7 +203,7 @@ export default function Calculator() {
             WHY - Purpose
           </TabsTrigger>
           <TabsTrigger value="how" className="flex items-center gap-2">
-            <ChartPie className="w-4 h-4" />
+            <PieChart className="w-4 h-4" />
             HOW - Strategy
           </TabsTrigger>
           <TabsTrigger value="what" className="flex items-center gap-2">
@@ -308,7 +309,7 @@ export default function Calculator() {
               </div>
 
               <InvestmentAllocation
-                allocation={inputs.investmentAllocation!}
+                allocation={inputs.investmentAllocation || {}}
                 onChange={handleAllocationChange}
               />
 
@@ -329,12 +330,12 @@ export default function Calculator() {
             </CardHeader>
             <CardContent className="space-y-6">
               <ExpenseBreakdown
-                expenses={inputs.monthlyExpenses!}
+                expenses={inputs.monthlyExpenses || {}}
                 onChange={handleExpenseChange}
               />
 
               <IncomeDetails
-                income={inputs.incomeDetails!}
+                income={inputs.incomeDetails || {}}
                 onChange={handleIncomeChange}
               />
 
