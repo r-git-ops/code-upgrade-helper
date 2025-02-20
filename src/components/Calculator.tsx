@@ -9,17 +9,17 @@ import { defaultCategoryInflationRates } from '../utils/inflationRates';
 import type { 
   FIRECalculation, 
   LifeEvent, 
-  MonthlyExpenses, 
-  IncomeDetails as IncomeDetailsType, 
-  InvestmentAllocation as InvestmentAllocationType 
+  MonthlyExpenses,
+  IncomeDetails,
+  InvestmentAllocation
 } from '../types';
 import InputField from './Calculator/InputField';
 import ResultsCard from './Calculator/ResultsCard';
 import ProjectionChart from './Calculator/ProjectionChart';
 import InsightsCard from './Calculator/InsightsCard';
 import ExpenseBreakdown from './Calculator/ExpenseBreakdown';
-import IncomeDetailsComponent from './Calculator/IncomeDetails';
-import InvestmentAllocationComponent from './Calculator/InvestmentAllocation';
+import { default as IncomeDetailsView } from './Calculator/IncomeDetails';
+import { default as InvestmentAllocationView } from './Calculator/InvestmentAllocation';
 import EventForm from './Calculator/LifeEvents/EventForm';
 import EventList from './Calculator/LifeEvents/EventList';
 
@@ -97,7 +97,7 @@ export default function Calculator() {
     }));
   };
 
-  const handleIncomeChange = (name: keyof IncomeDetailsType, value: number) => {
+  const handleIncomeChange = (name: keyof IncomeDetails, value: number) => {
     setInputs(prev => ({
       ...prev,
       incomeDetails: {
@@ -107,7 +107,7 @@ export default function Calculator() {
     }));
   };
 
-  const handleAllocationChange = (name: keyof InvestmentAllocationType, value: number) => {
+  const handleAllocationChange = (name: keyof InvestmentAllocation, value: number) => {
     setInputs(prev => ({
       ...prev,
       investmentAllocation: {
@@ -313,7 +313,7 @@ export default function Calculator() {
                 />
               </div>
 
-              <InvestmentAllocationComponent
+              <InvestmentAllocationView
                 allocation={inputs.investmentAllocation}
                 onChange={handleAllocationChange}
               />
@@ -339,7 +339,7 @@ export default function Calculator() {
                 onChange={handleExpenseChange}
               />
 
-              <IncomeDetailsComponent
+              <IncomeDetailsView
                 income={inputs.incomeDetails}
                 onChange={handleIncomeChange}
               />
