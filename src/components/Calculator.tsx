@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { PieChart, Target, CheckSquare } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,16 +10,16 @@ import type {
   FIRECalculation, 
   LifeEvent, 
   MonthlyExpenses, 
-  IncomeDetails, 
-  InvestmentAllocation 
+  IncomeDetails as IncomeDetailsType, 
+  InvestmentAllocation as InvestmentAllocationType 
 } from '../types';
 import InputField from './Calculator/InputField';
 import ResultsCard from './Calculator/ResultsCard';
 import ProjectionChart from './Calculator/ProjectionChart';
 import InsightsCard from './Calculator/InsightsCard';
 import ExpenseBreakdown from './Calculator/ExpenseBreakdown';
-import IncomeDetails from './Calculator/IncomeDetails';
-import InvestmentAllocation from './Calculator/InvestmentAllocation';
+import IncomeDetailsComponent from './Calculator/IncomeDetails';
+import InvestmentAllocationComponent from './Calculator/InvestmentAllocation';
 import EventForm from './Calculator/LifeEvents/EventForm';
 import EventList from './Calculator/LifeEvents/EventList';
 
@@ -98,7 +97,7 @@ export default function Calculator() {
     }));
   };
 
-  const handleIncomeChange = (name: keyof IncomeDetails, value: number) => {
+  const handleIncomeChange = (name: keyof IncomeDetailsType, value: number) => {
     setInputs(prev => ({
       ...prev,
       incomeDetails: {
@@ -108,7 +107,7 @@ export default function Calculator() {
     }));
   };
 
-  const handleAllocationChange = (name: keyof InvestmentAllocation, value: number) => {
+  const handleAllocationChange = (name: keyof InvestmentAllocationType, value: number) => {
     setInputs(prev => ({
       ...prev,
       investmentAllocation: {
@@ -314,7 +313,7 @@ export default function Calculator() {
                 />
               </div>
 
-              <InvestmentAllocation
+              <InvestmentAllocationComponent
                 allocation={inputs.investmentAllocation}
                 onChange={handleAllocationChange}
               />
@@ -340,7 +339,7 @@ export default function Calculator() {
                 onChange={handleExpenseChange}
               />
 
-              <IncomeDetails
+              <IncomeDetailsComponent
                 income={inputs.incomeDetails}
                 onChange={handleIncomeChange}
               />
