@@ -6,5 +6,7 @@ export interface LifeEvent {
   recurring: boolean;
   frequency?: 'monthly' | 'yearly';
   inflationAdjusted: boolean;
-  category?: string;
+  category: string;
+  description?: string;
+  priority?: 'essential' | 'important' | 'optional';
 }
