@@ -32,7 +32,7 @@
     @apply border-gray-700;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-black text-white;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
@@ -57,5 +57,5 @@
 }
 
 .card-gradient {
-  @apply bg-gradient-to-br from-primary/50 via-primary/30 to-transparent;
+  @apply bg-gradient-to-br from-blue-500/50 via-blue-500/30 to-transparent;
 }
