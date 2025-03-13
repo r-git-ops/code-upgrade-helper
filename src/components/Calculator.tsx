@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { PieChart, Target, CheckSquare } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -182,7 +183,7 @@ export default function Calculator() {
                         <input
                           type="checkbox"
                           checked={lifeEvents.enabled}
-                          onChange={(e) => setLifeEvents(prev => ({ ...prev, enabled: e.target.checked }))}
+                          onChange={(e) => handlers.handleLifeEventToggle(e.target.checked)}
                           className="rounded text-blue-600"
                         />
                         <span className="text-sm text-gray-600">Include in calculations</span>
@@ -201,7 +202,15 @@ export default function Calculator() {
 
                   {showEventForm && (
                     <EventForm
-                      onSubmit={handlers.handleAddEvent}
+                      onSubmit={(event) => {
+                        if (editingEventIndex !== null) {
+                          handlers.handleEditLifeEvent(editingEventIndex, event);
+                        } else {
+                          handlers.handleAddLifeEvent(event);
+                        }
+                        setShowEventForm(false);
+                        setEditingEventIndex(null);
+                      }}
                       onCancel={() => {
                         setShowEventForm(false);
                         setEditingEventIndex(null);
@@ -212,8 +221,8 @@ export default function Calculator() {
 
                   <EventList
                     events={lifeEvents.events}
-                    onEdit={handlers.handleEditEvent}
-                    onDelete={handlers.handleDeleteEvent}
+                    onEdit={handleEditEvent}
+                    onDelete={handleDeleteEvent}
                   />
                 </div>
               </CardContent>
@@ -223,4 +232,13 @@ export default function Calculator() {
       </div>
     </div>
   );
+  
+  function handleEditEvent(index: number) {
+    setEditingEventIndex(index);
+    setShowEventForm(true);
+  }
+
+  function handleDeleteEvent(index: number) {
+    handlers.handleDeleteLifeEvent(index);
+  }
 }
